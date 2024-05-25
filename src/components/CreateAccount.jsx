@@ -1,22 +1,35 @@
 import { useState } from 'react'
 import { auth, db } from '../firebaseConfig';
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
-import { setDoc } from 'firebase/firestore';
+import { setDoc, doc, collection, query, where, getDocs, getDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
 const CreateAccount = () => {
-    const [registerUsername, setRegisterUsername] = useState("");
+    const [registerFirstName, setRegisterFirstName] = useState("")
+    const [registerLastName, setRegisterLastName] = useState("")
     const [registerEmail, setRegisterEmail] = useState("");
     const [registerPassword, setRegisterPassword] = useState("");
+    const userCollectionRef = collection(db, "users");
+    const [registered,setRegistered] = useState(false)
 
-    const registerUser = async () => {
-        try{
+    const registerUser = async () => {     
+      try{
+          if(registerFirstName !== "" && registerLastName !== ""){
             const newUser = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
-            await updateProfile(newUser.user, {displayName: registerUsername});
             await sendEmailVerification(newUser.user);
-            console.log(newUser.user.uid);
+            await setDoc(doc(userCollectionRef, newUser.user.uid), {firstName: registerFirstName, lastName: registerLastName, email: registerEmail, emailVerified: newUser.user.emailVerified})
+            setRegistered(true);
+          } else {
+            alert("Name field cannot be empty")
+          }
         }
         catch(error){
-            console.log(error.message);
+            if(error.code === "auth/email-already-use"){
+              alert("Email exists already")
+            }else if(error.code === "auth/invalid-email" || error.code === "auth/missing-email" || error.code === "auth/missing-password"){
+              alert("Enter a valid email and password");
+            }
+            // console.log(error.code)
         }
     }
 
@@ -24,10 +37,19 @@ const CreateAccount = () => {
 
   return (
     <div>
-        <input type="text" placeholder="Username" onChange={(e) => {setRegisterUsername(e.target.value)}}/>
+      {
+        registered ? 
+        <>
+          <p>A Message has being sent to your inbox. Click the link inside to verify your email.</p>
+        </> :
+        <>
+        <input type="text" placeholder="First Name" onChange={(e) => {setRegisterFirstName(e.target.value)}}/>
+        <input type="text" placeholder="Last Name" onChange={(e) => {setRegisterLastName(e.target.value)}}/>
         <input type="email" placeholder="Email" onChange={(e) => {setRegisterEmail(e.target.value)}}/>
         <input type="password" placeholder="Password" onChange={(e) => {setRegisterPassword(e.target.value)}}/>
-        <button onClick={registerUser}>Create Account</button>
+        <button type="submit" onClick={registerUser}>Create Account</button>
+        </>
+      }
     </div>
   )
 }
