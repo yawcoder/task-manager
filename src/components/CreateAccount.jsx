@@ -17,7 +17,7 @@ const CreateAccount = () => {
           if(registerFirstName !== "" && registerLastName !== ""){
             const newUser = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
             await sendEmailVerification(newUser.user);
-            await setDoc(doc(userCollectionRef, newUser.user.uid), {firstName: registerFirstName, lastName: registerLastName, email: registerEmail, emailVerified: newUser.user.emailVerified})
+            await setDoc(doc(userCollectionRef, newUser.user.uid), {firstName: registerFirstName, lastName: registerLastName, email: registerEmail})
             setRegistered(true);
           } else {
             alert("Name field cannot be empty")

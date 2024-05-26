@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import { signOut } from 'firebase/auth'
+import { useEffect } from 'react'
 import { auth } from '../firebaseConfig'
 import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
@@ -15,16 +14,10 @@ const Dashboard = () => {
         })
     }, [])
 
-    const signUserOut = async () => {
-        await signOut(auth);
-        navigate("/login");
-    }
-
 
   return (
     <div>
         <p>Dashboard</p>
-        <button onClick={signUserOut}>Sign Out</button>
     </div>
   )
 }

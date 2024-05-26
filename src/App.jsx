@@ -5,6 +5,7 @@ import { auth } from './firebaseConfig'
 import Login from './components/Login'
 import Verified from './components/Verified'
 import Dashboard from './components/Dashboard'
+import Navbar from './components/Navbar'
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
   return (
     <div>
     <Router>
+      <Navbar/>
       <Routes>
         <Route path="/createaccount" element={<CreateAccount/>}/>
         <Route path="/login" element={<Login/>} />
