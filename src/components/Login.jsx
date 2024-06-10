@@ -36,11 +36,11 @@ const Login = () => {
 
 
   return (
-    <div>
-        <form onSubmit={login}>
-            <input type="email" placeholder="Enter your Email" onChange={(e) => {setLoginEmail(e.target.value)}}/>
+    <div className="w-full flex h-screen justify-center items-center">
+        <form onSubmit={login} className="flex flex-col gap-5 border-2 py-5 px-5 w-11/12">
+            <input type="email" placeholder="Enter your Email" onChange={(e) => {setLoginEmail(e.target.value)}} className="border-2 p-3"/>
             <input type="password" placeholder="Enter your Password" onChange={(e) => {setLoginPassword(e.target.value)}}/>
-            <button type="submit">Login</button>
+            <button type="submit" className="bg-red-400 py-3">Login</button>
         </form>
     </div>
   )

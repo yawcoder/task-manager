@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import logo from "../assets/react.svg"
+import logo from "../assets/logo.jpg"
 import { auth, db } from '../firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import { collection, doc, getDoc } from 'firebase/firestore';
@@ -33,9 +33,9 @@ const Navbar = () => {
 
 
   return (
-    <div>
+    <nav>
         <div>
-            <img src={logo} alt="logo" />
+            <img src={logo} alt="logo" width="300"/>
         </div>
         <div>
             {
@@ -45,11 +45,11 @@ const Navbar = () => {
                     <button onClick={signUserOut}>Sign Out</button>
                 </> :
                 <>
-                    <Link to="/login">Login</Link>
+                    <Link to="/login">Log in</Link>
                 </>
             }
         </div>
-    </div>
+    </nav>
   )
 }
 
